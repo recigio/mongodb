@@ -23,14 +23,19 @@ db.pets.insert({name: "Frodo", species: "Hamster"})
 2 Faça uma contagem dos pets na coleção 
 ```
 db.pets.find({}).count()
+8
 ```
 3 Retorne apenas um elemento o método prático possível 
 ```
 db.pets.find({}).limit(1)
+
+{ "_id" : ObjectId("5e66e78a1d3fd7c45d949d25"), "name" : "Mike", "species" : "Hamster" }
 ```
 4 Identifique o ID para o Gato Kilha. 
 ```
 db.pets.find({name:'Kilha'},{'_id':1})
+
+{ "_id" : ObjectId("5e66e78a1d3fd7c45d949d27") }
 ```
 5 Faça uma busca pelo ID e traga o Hamster Mike 
 ```
@@ -51,12 +56,20 @@ db.pets.find({'_id':ObjectId('5e66e78a1d3fd7c45d949d25')})
 6 Use o find para trazer todos os Hamsters 
 ```
 db.pets.find({'species':'Hamster'})
+
+{ "_id" : ObjectId("5e66e78a1d3fd7c45d949d25"), "name" : "Mike", "species" : "Hamster" }
+{ "_id" : ObjectId("5e66e7ed0f2c544b83da3bbd"), "name" : "Frodo", "species" : "Hamster" }
 ```
 7 Use o find para listar todos os pets com nome Mike 
 ```
 db.pets.find({'name':'Mike'})
+
+{ "_id" : ObjectId("5e66e78a1d3fd7c45d949d25"), "name" : "Mike", "species" : "Hamster" }
+{ "_id" : ObjectId("5e66e78a1d3fd7c45d949d28"), "name" : "Mike", "species" : "Cachorro" }
 ```
 8 Liste apenas o documento que é um Cachorro chamado Mike 
 ```
 db.pets.find({'name':'Mike','species':'Cachorro'})
+
+{ "_id" : ObjectId("5e66e78a1d3fd7c45d949d28"), "name" : "Mike", "species" : "Cachorro" }
 ```
