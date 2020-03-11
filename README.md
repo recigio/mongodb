@@ -229,17 +229,65 @@ WriteResult({ "nRemoved" : 104 })
 ```
 17 Utilizando o framework agregate, liste apenas as pessoas com nomes iguais a sua respectiva mãe e que tenha gato ou cachorro. 
 ```
+db.italians.aggregate([
+   {
+      $match : { 
+         $or: [
+            {"cat":{"$exists":true}},
+            {"dog":{"$exists":true}}
+            ]
+      }
+    },
+    {"$addFields": {
+        "nameEqMotherName": {"$eq":["$firstname","$mother.name"]}
+      }
+    }
+])
 
 ```
 18 Utilizando aggregate framework, faça uma lista de nomes única de nomes. Faça isso usando apenas o primeiro nome 
 ```
+db.italians.distinct( "firstname" );
+
+//nao adicionado para nao ficar grande
 ```
 19 Agora faça a mesma lista do item acima, considerando nome completo. 
 ```
+db.italians.aggregate( 
+            [
+                {"$group": { "nome_completo": { firstname: "$firstname", surname: "$surname" } } }
+            ]
+        );
+//nao adicionado para nao ficar grande
 ```
 20 Procure pessoas que gosta de Banana ou Maçã, tenham cachorro ou gato, mais de 20 e  menos de 60 anos
 ```
+db.italians.find(
+    {   
+         $and: [  
+             { 
+                $or: [
+                         { 
+                            $or: [ {favFruits: {$in:["Maçã"]}},{favFruits: {$in:["Banana"]}}]
+                         },
+                         { 
+                            $or: [ {cat: {$exists:true}},{dog: {$exists:true}}]
+                         }
+                 ],
+             },
+            {
+                'age' : { $gt:20 }
+            },
+            {
+                'age' : { $lt:60 }
+            }
+        ]    
+    }
+)
+
+4144
 ```
+
 ## Exercício 3 – Stockbrokers 
 Importe o arquivo stocks.json do repositório Downloads NoSQL FURB. 
 Esses dados são dados reais da bolsa americana de 2015. 
