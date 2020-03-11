@@ -300,23 +300,40 @@ mongoimport --db stocks --collection stocks --file stocks.json
 Analise um pouco a estrutura dos dados novamente e em seguida, responda as seguintes perguntas: 
 
 1 Liste as ações com profit acima de 0.5 (limite a 10 o resultado)
- 
+```
+show collections
+
+db.stocks.find({})
+
+db.stocks.find({'Profit Margin':{$gt:0.5}}).limit(10)
+
+```
 2 Liste as ações com perdas (limite a 10 novamente) 
-
+```
+db.stocks.find({'Profit Margin':{$lt:0}}).limit(10)
+```
 3 Liste as 10 ações mais rentáveis  
-
+```
+db.stocks.find({}).sort({'Profit Margin':-1})
+```
 4 Qual foi o setor mais rentável? 
-
+```
+```
 5 Ordene as ações pelo profit e usando um cursor, liste as ações. 
-
+```
+```
 6 Renomeie o campo “Profit Margin” para apenas “profit”. 
-
+```
+```
 7 Agora liste apenas a empresa e seu respectivo resultado 
-
+```
+```
 8 Analise as ações. É uma bola de cristal na sua mão... Quais as três ações você investiria? 
-
+```
+```
 9 Liste as ações agrupadas por setor
-
+```
+```
 
 ## Exercício 3 (seria 4?) – Fraude na Enron! 
 
@@ -327,5 +344,8 @@ mongoimport --db stocks --collection stocks --file enron.json
 ```
 
 1. Liste as pessoas que enviaram e-mails (de forma distinta, ou seja, sem repetir). Quantas pessoas são? 
-
+```
+```
 2. Contabilize quantos e-mails tem a palavra “fraud” 
+```
+```
