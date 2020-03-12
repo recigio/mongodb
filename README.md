@@ -381,8 +381,12 @@ mongoimport --db stocks --collection eron --file enron.json
 
 1. Liste as pessoas que enviaram e-mails (de forma distinta, ou seja, sem repetir). Quantas pessoas são? 
 ```
-
+db.eron.distinct("sender")
+db.eron.distinct("sender").length
+2200
 ```
 2. Contabilize quantos e-mails tem a palavra “fraud” 
 ```
+db.eron.find({ text: { $regex: /fraud/i}}).count()
+25
 ```
