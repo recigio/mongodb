@@ -314,37 +314,74 @@ db.stocks.find({'Profit Margin':{$lt:0}}).limit(10)
 ```
 3 Liste as 10 ações mais rentáveis  
 ```
-db.stocks.find({}).sort({'Profit Margin':-1})
+db.stocks.find({}).sort({'Profit Margin':-1}).limit(10)
 ```
 4 Qual foi o setor mais rentável? 
 ```
+db.stocks.aggregate(
+   [
+       
+     {
+       $group:
+         {
+           _id: { sector: "$Sector" },
+           totalAmount: { $sum: "$Profit Margin" }
+         }
+     },
+     {
+        $sort:{ totalAmount:-1 }
+      },
+   ]
+)
+
+{ "_id" : { "sector" : "Financial" }, "totalAmount" : 162.5356 }
 ```
 5 Ordene as ações pelo profit e usando um cursor, liste as ações. 
 ```
+const cursor = db.stocks.find({}).sort({'Profit Margin':-1});
+
+while (cursor.hasNext()) {
+    const atual = cursor.next();
+   console.log(atual);
+}
+
 ```
 6 Renomeie o campo “Profit Margin” para apenas “profit”. 
 ```
+db.stocks.updateMany( {}, { $rename: { "Profit Margin": "profit" } } )
+
 ```
 7 Agora liste apenas a empresa e seu respectivo resultado 
 ```
+db.stocks.find({},{'Company':1,'profit':1})
+
 ```
 8 Analise as ações. É uma bola de cristal na sua mão... Quais as três ações você investiria? 
 ```
+Escolheria as que nos ultimos 50 dias tiveram o melhor moving average. Um periodo nem tão curto, nem tão longo.
+
+db.stocks.find({}).sort({'50-Day Simple Moving Average':-1}).limit(3)
+
 ```
 9 Liste as ações agrupadas por setor
 ```
+db.stocks.aggregate([
+   { $group : { _id : "$Sector", empresas: { $push: "$Company" } } }
+ ])
 ```
 
 ## Exercício 3 (seria 4?) – Fraude na Enron! 
 
 Um dos casos mais emblemáticos de fraude no mundo é o caso da Enron. A comunicade do MongoDB utiliza muito esse dataset pois o mesmo se tornou público, então vamos importar esse material também: 
  
+(OBS: alterada collection para manter a stocks no banco)
 ```
-mongoimport --db stocks --collection stocks --file enron.json 
+mongoimport --db stocks --collection eron --file enron.json 
 ```
 
 1. Liste as pessoas que enviaram e-mails (de forma distinta, ou seja, sem repetir). Quantas pessoas são? 
 ```
+
 ```
 2. Contabilize quantos e-mails tem a palavra “fraud” 
 ```
